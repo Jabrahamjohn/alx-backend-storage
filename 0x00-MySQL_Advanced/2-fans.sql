@@ -1,10 +1,7 @@
 -- Create a temporary table to store the aggregated fan counts per country
-CREATE TEMPORARY TABLE temp_fan_counts AS
-SELECT origin, COUNT(*) AS nb_fans
+SELECT origin,
+       COUNT(*) AS total_fans,
+       DENSE_RANK() OVER (ORDER BY COUNT(*) DESC) AS rank
 FROM metal_bands
-GROUP BY origin;
-
--- Rank the country origins based on the number of fans
-SELECT origin, nb_fans
-FROM temp_fan_counts
-ORDER BY nb_fans DESC;
+GROUP BY origin
+ORDER BY rank;
