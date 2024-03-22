@@ -1,4 +1,4 @@
-# alx-backend-storage
+# 0x00.MySQL advanced
 ### Back-end SQL MySQL
 this is a series of my learning projects towards storage manipulation
 
