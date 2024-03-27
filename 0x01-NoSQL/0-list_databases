@@ -1,3 +1,5 @@
+// listing all databasses in the MongoDB server
+
 const { MongoClient } = require('mongodb');
 
 async function listDatabases() {
