@@ -4,6 +4,7 @@ import redis
 import uuid
 from typing import Union
 from functools import wraps
+from typing import Callable
 
 class Cache:
     def __init__(self):
@@ -14,7 +15,7 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
-    
+
     def get(self, key: str, fn: Callable = None) -> Union[str, bytes, int, float, None]:
         data = self._redis.get(key)
         if data is None:
@@ -65,15 +66,16 @@ class Cache:
         return key
     
     def replay(func):
+        cache = Cache()  # Define the cache object
         method_name = func.__name__
         input_key = method_name + ":inputs"
         output_key = method_name + ":outputs"
-        
+
         inputs = cache._redis.lrange(input_key, 0, -1)
         outputs = cache._redis.lrange(output_key, 0, -1)
-        
+
         num_calls = len(inputs)
-        
+
         print(f"{method_name} was called {num_calls} times:")
         
         for i in range(num_calls):
