@@ -63,3 +63,21 @@ class Cache:
         key = str(uuid.uuid4())
         self._redis.set(key, data)
         return key
+    
+    def replay(func):
+        method_name = func.__name__
+        input_key = method_name + ":inputs"
+        output_key = method_name + ":outputs"
+        
+        inputs = cache._redis.lrange(input_key, 0, -1)
+        outputs = cache._redis.lrange(output_key, 0, -1)
+        
+        num_calls = len(inputs)
+        
+        print(f"{method_name} was called {num_calls} times:")
+        
+        for i in range(num_calls):
+            input_args = eval(inputs[i].decode())
+            output = outputs[i].decode()
+            
+            print(f"{method_name}(*{input_args}) -> {output}")
