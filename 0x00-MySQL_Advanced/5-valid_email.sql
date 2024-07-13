@@ -5,7 +5,7 @@ CREATE TRIGGER reset_valid_email
 BEFORE UPDATE ON your_table
 FOR EACH ROW
 BEGIN
-    IF NEW.email <> OLD.email THEN
+    IF NEW.email != OLD.email THEN
         SET NEW.valid_email = NULL;
     END IF;
 END //
