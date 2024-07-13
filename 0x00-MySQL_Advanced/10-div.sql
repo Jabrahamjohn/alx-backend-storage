@@ -1,18 +1,13 @@
---- creates a function that divides two numbers, but returns 0 if the second number is 0
-DELIMITER //
+-- Creates a function SafeDiv that divides (and returns)
+-- the first by the second number or returns 0
+-- if the second number is equal to 0.
 
+DELIMITER $$
+DROP FUNCTION IF EXISTS SafeDiv;
 CREATE FUNCTION SafeDiv(a INT, b INT)
-RETURNS INT
+RETURNS FLOAT
 BEGIN
-    DECLARE result INT;
-    
-    IF b = 0 THEN
-        SET result = 0;
-    ELSE
-        SET result = a / b;
-    END IF;
-    
-    RETURN result;
-END //
-
+    RETURN (IF (b = 0, 0, a / b));
+END
+$$
 DELIMITER ;
